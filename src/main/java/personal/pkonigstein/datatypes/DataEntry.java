@@ -4,8 +4,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "prompts")
 public class DataEntry{
-    private String name;
-    private String action;
+    protected String name;
+    protected String action;
 
     public DataEntry(String name, String action) {
         this.name = name;
