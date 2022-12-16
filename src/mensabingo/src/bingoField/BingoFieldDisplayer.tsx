@@ -16,13 +16,6 @@ const BingoFieldDisplayer: React.FC<BingoFieldProps> = () => {
   // content of bingo fields
     const [bingoField, setBingoField] = useState<BingoField>(new BingoField());
     const [fields, setFields] = useState<BingoCell[][]>([[]]);
-  // const [fields, setFields] = useState<string[][]>([
-  //   ["1", "2", "3", "4", "5"],
-  //   ["6", "7", "8", "9", "10"],
-  //   ["11", "12", "13", "14", "15"],
-  //   ["16", "17", "18", "19", "20"],
-  //   ["21", "22", "23", "24", "25"],
-  // ]);
 
   const [completed, setCompleted] = useState<boolean[][]>([
     [false, false, false, false, false],
@@ -56,6 +49,8 @@ const BingoFieldDisplayer: React.FC<BingoFieldProps> = () => {
   const clickCell = (cell: BingoCell) => {
     console.debug("clicked Cell");
     // open popup with given text
+    cell.happened=true;
+    setBingoField(bingoField.eventHappened(cell));
     // setModalText(bingoField.field[position[0]][position[1]].name);
     // setClickedPosition([position[0], position[1]]);
     // setModalOpen(true);
