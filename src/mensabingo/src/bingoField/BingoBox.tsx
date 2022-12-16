@@ -1,10 +1,10 @@
 import React from "react";
 import classNames from "classnames";
+import { BingoCell } from "../datatypes/BIngoCell";
 
 export type BingoBoxProps = {
-  text: string;
   clickField: () => void;
-  completed: boolean;
+  field: BingoCell;
 };
 
 const BingoBox: React.FC<BingoBoxProps> = (props) => {
@@ -28,10 +28,10 @@ const BingoBox: React.FC<BingoBoxProps> = (props) => {
 
   return (
     <div
-      className={classNames({ bingoBox: true, completed: props.completed })}
+      className={classNames({ bingoBox: true, completed: props.field.happened})}
       onClick={props.clickField}
     >
-      {props.text}
+      {props.field.name+" "+props.field.action}
     </div>
   );
 };

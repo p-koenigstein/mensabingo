@@ -20,9 +20,8 @@ public class PromptController {
     }
 
     @GetMapping(value="/getBingoField")
-    public String[][] getBingofield(){
-        BingoField field = BingoManager.getField();
-        return field.toStringField();
+    public BingoField getBingofield(){
+        return BingoManager.getField();
     }
 
 }

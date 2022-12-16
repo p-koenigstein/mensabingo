@@ -3,23 +3,26 @@ import BingoBox from "./BingoBox";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
+import { BingoCell, BingoField } from "../datatypes/BIngoCell";
 
 export type BingoFieldProps = {};
 
-const BingoField: React.FC<BingoFieldProps> = () => {
+const BingoFieldDisplayer: React.FC<BingoFieldProps> = () => {
   /** ** ** ** ** ** **
    **                **
    **  Hook States   **
    **                **
    ** ** ** ** ** ** **/
   // content of bingo fields
-  const [fields, setFields] = useState<string[][]>([
-    ["1", "2", "3", "4", "5"],
-    ["6", "7", "8", "9", "10"],
-    ["11", "12", "13", "14", "15"],
-    ["16", "17", "18", "19", "20"],
-    ["21", "22", "23", "24", "25"],
-  ]);
+    const [bingoField, setBingoField] = useState<BingoField>(new BingoField());
+    const [fields, setFields] = useState<BingoCell[][]>([[]]);
+  // const [fields, setFields] = useState<string[][]>([
+  //   ["1", "2", "3", "4", "5"],
+  //   ["6", "7", "8", "9", "10"],
+  //   ["11", "12", "13", "14", "15"],
+  //   ["16", "17", "18", "19", "20"],
+  //   ["21", "22", "23", "24", "25"],
+  // ]);
 
   const [completed, setCompleted] = useState<boolean[][]>([
     [false, false, false, false, false],
@@ -39,7 +42,8 @@ const BingoField: React.FC<BingoFieldProps> = () => {
   useEffect(() => {
     axios.get("/getBingoField")
       .then(res => {
-        setFields(res.data);
+        console.debug(res.data)
+        setBingoField(res.data)
       });
   },[]);
 
@@ -49,12 +53,12 @@ const BingoField: React.FC<BingoFieldProps> = () => {
    **                **
    ** ** ** ** ** ** **/
 
-  const clickCell = (position: number[]) => {
+  const clickCell = (cell: BingoCell) => {
     console.debug("clicked Cell");
     // open popup with given text
-    setModalText(fields[position[0]][position[1]]);
-    setClickedPosition([position[0], position[1]]);
-    setModalOpen(true);
+    // setModalText(bingoField.field[position[0]][position[1]].name);
+    // setClickedPosition([position[0], position[1]]);
+    // setModalOpen(true);
   };
 
   const closeModal = () => {
@@ -98,21 +102,17 @@ const BingoField: React.FC<BingoFieldProps> = () => {
       </Modal>
       <table cellSpacing={0} className={"singleBorder"}>
         <tbody>
-          {fields.map((row) => (
-            <tr key={fields.indexOf(row)}>
+          {bingoField.field.map((row) => (
+            <tr key={bingoField.field.indexOf(row)}>
               {row.map((cell) => (
                 <td
                   className={"singleBorder"}
-                  key={fields.indexOf(row) + " " + row.indexOf(cell)}
+                  key={bingoField.field.indexOf(row) + " " + row.indexOf(cell)}
                 >
                   <BingoBox
-                    text={cell}
-                    key={cell}
+                    field = {cell}
                     clickField={() =>
-                      clickCell([fields.indexOf(row), row.indexOf(cell)])
-                    }
-                    completed={
-                      completed[fields.indexOf(row)][row.indexOf(cell)]
+                      clickCell(cell)
                     }
                   />
                 </td>
@@ -125,4 +125,4 @@ const BingoField: React.FC<BingoFieldProps> = () => {
   );
 };
 
-export default BingoField;
+export default BingoFieldDisplayer;
