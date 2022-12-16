@@ -63,8 +63,6 @@ public class BingoField {
         }
     }
 
-
-
     public BingoCell[][] getField() {
         return field;
     }

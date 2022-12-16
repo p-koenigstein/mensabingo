@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 public class BingoManager {
 
     private static Map<String, BingoField> fieldsByPlayer = new HashMap<>();
-    private static BingoField field;
 
     public static BingoField getField(String playerName){
         if(fieldsByPlayer == null){
@@ -27,13 +26,6 @@ public class BingoManager {
         return fieldsByPlayer.get(playerName);
     }
 
-    public static BingoField getField() {
-        if (field == null){
-            field = generateField();
-        }
-        return field;
-    }
-
     private static BingoField generateField(String playerName){
         //TODO: filter Entries by playerName
         List<DataEntry> entries = MongoConnector.getBingoField();
@@ -41,14 +33,8 @@ public class BingoManager {
         return new BingoField(entries.stream().map(BingoCell::new).collect(Collectors.toList()));
     }
 
-    private static BingoField generateField() {
-        List<DataEntry> entries = MongoConnector.getBingoField();
-        assert entries != null;
-        return new BingoField(entries.stream().map(BingoCell::new).collect(Collectors.toList()));
-    }
-
-    public static BingoField acceptCell(BingoCell cell) {
-        field.acceptCell(cell);
-        return field;
+    public static BingoField acceptCell(String name, BingoCell cell) {
+        fieldsByPlayer.get(name).acceptCell(cell);
+        return fieldsByPlayer.get(name);
     }
 }

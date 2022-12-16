@@ -59,7 +59,7 @@ const BingoFieldDisplayer: React.FC<BingoFieldProps> = () => {
 
   const acceptCell = () => {
     // http request to backend to set field to true
-    axios.post("/acceptField",clickedCell)
+    axios.post("/acceptField/"+name,clickedCell)
       .then(res => {
         setBingoField(res.data)
         if(res.data.thisBingoFinished){

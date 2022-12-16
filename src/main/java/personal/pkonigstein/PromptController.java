@@ -21,9 +21,9 @@ public class PromptController {
         return BingoManager.getField(name);
     }
 
-    @PostMapping(value="/acceptField")
-    public BingoField acceptCell(@RequestBody BingoCell cell){
-        return BingoManager.acceptCell(cell);
+    @PostMapping(value="/acceptField/{name}")
+    public BingoField acceptCell(@PathVariable String name, @RequestBody BingoCell cell){
+        return BingoManager.acceptCell(name, cell);
     }
 
 }
