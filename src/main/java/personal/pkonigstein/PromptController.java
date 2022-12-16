@@ -5,10 +5,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import personal.pkonigstein.datatypes.BingoCell;
 import personal.pkonigstein.datatypes.BingoField;
 import personal.pkonigstein.datatypes.DataEntry;
 import personal.pkonigstein.datatypes.MongoConnector;
-import java.util.List;
 
 @RestController
 public class PromptController {
@@ -22,6 +22,11 @@ public class PromptController {
     @GetMapping(value="/getBingoField")
     public BingoField getBingofield(){
         return BingoManager.getField();
+    }
+
+    @PostMapping(value="/acceptField")
+    public BingoField acceptCell(@RequestBody BingoCell cell){
+        return BingoManager.acceptCell(cell);
     }
 
 }

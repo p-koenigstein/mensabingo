@@ -1,6 +1,6 @@
 import React from "react";
 import classNames from "classnames";
-import { BingoCell } from "../datatypes/BIngoCell";
+import { BingoCell } from "../datatypes/BingoCell";
 
 export type BingoBoxProps = {
   clickField: () => void;

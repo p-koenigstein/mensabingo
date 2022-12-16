@@ -34,10 +34,6 @@ class BingoCell {
 class BingoField {
   field : BingoCell[][];
 
-  eventHappened(cell: BingoCell){
-    return this;
-  }
-
   constructor() {
     this.field = [];
     for(let i=0;i<5;i++){

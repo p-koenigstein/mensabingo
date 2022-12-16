@@ -4,7 +4,10 @@ public class BingoCell extends DataEntry{
 
     private static long idCounter= 0;
     private boolean happened;
-    private final long id;
+    private long id;
+
+    public BingoCell() {
+    }
 
     public BingoCell(DataEntry entry){
         this.id = idCounter++;
@@ -19,7 +22,7 @@ public class BingoCell extends DataEntry{
         this.happened = false;
     }
 
-    public boolean hasHappened() {
+    public boolean isHappened() {
         return happened;
     }
 

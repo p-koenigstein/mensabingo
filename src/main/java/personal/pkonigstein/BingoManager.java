@@ -25,4 +25,8 @@ public class BingoManager {
         return new BingoField(entries.stream().map(BingoCell::new).collect(Collectors.toList()));
     }
 
+    public static BingoField acceptCell(BingoCell cell) {
+        field.acceptCell(cell);
+        return field;
+    }
 }

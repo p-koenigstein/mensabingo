@@ -3,7 +3,7 @@ import BingoBox from "./BingoBox";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
-import { BingoCell, BingoField } from "../datatypes/BIngoCell";
+import { BingoCell, BingoField } from "../datatypes/BingoCell";
 
 export type BingoFieldProps = {};
 
@@ -25,7 +25,7 @@ const BingoFieldDisplayer: React.FC<BingoFieldProps> = () => {
     [false, false, false, false, false],
   ]);
 
-  const [clickedPosition, setClickedPosition] = useState<number[]>([-1, -1]);
+  const [clickedCell, setClickedCell] = useState<BingoCell>(new BingoCell(-1));
 
   // whether popup currently is open
   const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -49,11 +49,10 @@ const BingoFieldDisplayer: React.FC<BingoFieldProps> = () => {
   const clickCell = (cell: BingoCell) => {
     console.debug("clicked Cell");
     // open popup with given text
-    cell.happened=true;
-    setBingoField(bingoField.eventHappened(cell));
-    // setModalText(bingoField.field[position[0]][position[1]].name);
-    // setClickedPosition([position[0], position[1]]);
-    // setModalOpen(true);
+    setClickedCell(cell);
+    console.log(bingoField);
+    setModalText(cell.name+" "+cell.action);
+    setModalOpen(true);
   };
 
   const closeModal = () => {
@@ -62,12 +61,13 @@ const BingoFieldDisplayer: React.FC<BingoFieldProps> = () => {
     setModalOpen(false);
   };
 
-  const acceptField = () => {
-    let tmpCompleted = completed;
-    tmpCompleted[clickedPosition[0]][clickedPosition[1]] = true;
-    setCompleted(tmpCompleted);
+  const acceptCell = () => {
+    // http request to backend to set field to true
+    axios.post("/acceptField",clickedCell)
+      .then(res => setBingoField(res.data));
     closeModal();
   };
+
 
   const refuseField = () => {
     closeModal();
@@ -87,7 +87,7 @@ const BingoFieldDisplayer: React.FC<BingoFieldProps> = () => {
         </Modal.Header>
         <Modal.Body>{modalText}</Modal.Body>
         <Modal.Footer>
-          <Button variant="success" onClick={acceptField}>
+          <Button variant="success" onClick={acceptCell}>
             Yesss
           </Button>
           <Button variant="danger" onClick={refuseField}>
