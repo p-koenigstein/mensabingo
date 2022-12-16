@@ -33,6 +33,7 @@ class BingoCell {
 
 class BingoField {
   field : BingoCell[][];
+  thisBingoFinished: boolean;
 
   constructor() {
     this.field = [];
@@ -43,5 +44,6 @@ class BingoField {
       }
       this.field.push(row);
     }
+    this.thisBingoFinished = false;
   }
 }

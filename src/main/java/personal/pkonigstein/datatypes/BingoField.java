@@ -8,6 +8,7 @@ import java.util.Optional;
 public class BingoField {
     private BingoCell[][] field;
     private List<BingoCell> cells;
+    private boolean thisBingoFinished = false;
 
     public BingoField(List<BingoCell> fields) {
         //randomize for good measure
@@ -23,15 +24,19 @@ public class BingoField {
         }
     }
 
-    public BingoCell[][] getField() {
-        return field;
-    }
-
     public boolean checkBingo(){
         //Check bingo via cells list
+        boolean diag1Bingo = true;
+        boolean diag2Bingo = true;
         for(int i=0; i<5; i++){
             boolean rowBingo = true;
             boolean colBingo = true;
+            //diag1 elem
+            BingoCell diag1Elem = field[i][i];
+            diag1Bingo = diag1Bingo && diag1Elem.isHappened();
+            //diag2 elem
+            BingoCell diag2Elem = field[4-i][i];
+            diag2Bingo = diag2Bingo && diag2Elem.isHappened();
             for(int j=0;j<5;j++){
                 //next element in row
                 BingoCell nextRowElem = field[i][j];
@@ -44,7 +49,7 @@ public class BingoField {
                 return true;
             }
         }
-        return false;
+        return (diag1Bingo || diag2Bingo);
     }
 
 
@@ -54,6 +59,17 @@ public class BingoField {
         //TODO: do sth with this output:
         if(checkBingo()){
             System.out.println("BINGTOOTOT");
+            this.thisBingoFinished=true;
         }
+    }
+
+
+
+    public BingoCell[][] getField() {
+        return field;
+    }
+
+    public boolean isThisBingoFinished() {
+        return thisBingoFinished;
     }
 }

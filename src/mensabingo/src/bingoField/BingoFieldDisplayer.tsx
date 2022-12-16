@@ -15,28 +15,21 @@ const BingoFieldDisplayer: React.FC<BingoFieldProps> = () => {
    ** ** ** ** ** ** **/
   // content of bingo fields
     const [bingoField, setBingoField] = useState<BingoField>(new BingoField());
-    const [fields, setFields] = useState<BingoCell[][]>([[]]);
-
-  const [completed, setCompleted] = useState<boolean[][]>([
-    [false, false, false, false, false],
-    [false, false, false, false, false],
-    [false, false, false, false, false],
-    [false, false, false, false, false],
-    [false, false, false, false, false],
-  ]);
-
   const [clickedCell, setClickedCell] = useState<BingoCell>(new BingoCell(-1));
 
   // whether popup currently is open
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   // popup text
   const [modalText, setModalText] = useState<string>("");
+  // whether bingo popup is open
+  const [bingoModalOpen, setBingoModalOpen] = useState<boolean>(false);
+  // bingo popup text
+  const [bingoText, setBingoText] = useState<string>("You have the bingo of the kind");
 
   useEffect(() => {
     axios.get("/getBingoField")
       .then(res => {
-        console.debug(res.data)
-        setBingoField(res.data)
+        setBingoField(res.data);
       });
   },[]);
 
@@ -47,10 +40,8 @@ const BingoFieldDisplayer: React.FC<BingoFieldProps> = () => {
    ** ** ** ** ** ** **/
 
   const clickCell = (cell: BingoCell) => {
-    console.debug("clicked Cell");
     // open popup with given text
     setClickedCell(cell);
-    console.log(bingoField);
     setModalText(cell.name+" "+cell.action);
     setModalOpen(true);
   };
@@ -64,7 +55,12 @@ const BingoFieldDisplayer: React.FC<BingoFieldProps> = () => {
   const acceptCell = () => {
     // http request to backend to set field to true
     axios.post("/acceptField",clickedCell)
-      .then(res => setBingoField(res.data));
+      .then(res => {
+        setBingoField(res.data)
+        if(res.data.thisBingoFinished){
+          setBingoModalOpen(true);
+        }
+      });
     closeModal();
   };
 
@@ -81,6 +77,17 @@ const BingoFieldDisplayer: React.FC<BingoFieldProps> = () => {
 
   return (
     <div>
+      <Modal show={bingoModalOpen} onHide={() => setBingoModalOpen(false)}>
+        <Modal.Header>
+          <Modal.Title>WOW</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{bingoText}</Modal.Body>
+        <Modal.Footer>
+          <Button variant="success" onClick={() => setBingoModalOpen(false)}>
+            Gewinnertyp(-in)
+          </Button>
+        </Modal.Footer>
+      </Modal>
       <Modal show={modalOpen} onHide={closeModal}>
         <Modal.Header>
           <Modal.Title>Bingofeld erfüllt</Modal.Title>
