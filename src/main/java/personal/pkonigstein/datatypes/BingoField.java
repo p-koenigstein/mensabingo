@@ -52,6 +52,8 @@ public class BingoField {
         Optional<BingoCell> foundCell = cells.stream().filter(c -> c.getId()==cell.getId()).findFirst();
         foundCell.ifPresent(bingoCell -> bingoCell.setHappened(true));
         //TODO: do sth with this output:
-        System.out.println("Bingo?: "+checkBingo());
+        if(checkBingo()){
+            System.out.println("BINGTOOTOT");
+        }
     }
 }
