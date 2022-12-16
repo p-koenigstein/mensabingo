@@ -1,10 +1,7 @@
 package personal.pkonigstein;
 
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import personal.pkonigstein.datatypes.BingoCell;
 import personal.pkonigstein.datatypes.BingoField;
 import personal.pkonigstein.datatypes.DataEntry;
@@ -19,9 +16,9 @@ public class PromptController {
         return 0;
     }
 
-    @GetMapping(value="/getBingoField")
-    public BingoField getBingofield(){
-        return BingoManager.getField();
+    @GetMapping(value="/getBingoField/{name}")
+    public BingoField getBingofield(@PathVariable String name){
+        return BingoManager.getField(name);
     }
 
     @PostMapping(value="/acceptField")
