@@ -86,9 +86,15 @@ const BingoFieldDisplayer: React.FC<BingoFieldProps> = () => {
       <button onClick={() => setName(tmpName)}>Name abändern</button>
       <Modal show={bingoModalOpen} onHide={() => setBingoModalOpen(false)}>
         <Modal.Header>
-          <Modal.Title>WOW</Modal.Title>
+          <Modal.Title>Bingo</Modal.Title>
         </Modal.Header>
-        <Modal.Body>{bingoText}</Modal.Body>
+        <Modal.Body>
+          <div>
+          {bingoField.finishedBingoCells.map((cell)=>(
+            <div>{cell.name+" "+cell.action+" um "+cell.happenedTime}</div>
+          ))}
+          </div>
+        </Modal.Body>
         <Modal.Footer>
           <Button variant="success" onClick={() => setBingoModalOpen(false)}>
             Gewinnertyp(-in)

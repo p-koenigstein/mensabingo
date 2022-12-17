@@ -42,6 +42,7 @@ class BingoCell {
 class BingoField {
   field : BingoCell[][];
   thisBingoFinished: boolean;
+  finishedBingoCells : BingoCell[];
 
   constructor() {
     this.field = [];
@@ -53,5 +54,6 @@ class BingoField {
       this.field.push(row);
     }
     this.thisBingoFinished = false;
+    this.finishedBingoCells = [];
   }
 }

@@ -1,14 +1,17 @@
 package personal.pkonigstein.datatypes;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import org.springframework.data.util.Pair;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class BingoField {
+
+    private static int[][][] bingoAxes;
     private BingoCell[][] field;
     private List<BingoCell> cells;
     private boolean thisBingoFinished = false;
+    private List<BingoCell> finishedBingoCells;
 
     public BingoField(List<BingoCell> fields) {
         //randomize for good measure
@@ -22,34 +25,49 @@ public class BingoField {
                 this.cells.add(currentCell);
             }
         }
-    }
-
-    public boolean checkBingo(){
-        //Check bingo via cells list
-        boolean diag1Bingo = true;
-        boolean diag2Bingo = true;
-        for(int i=0; i<5; i++){
-            boolean rowBingo = true;
-            boolean colBingo = true;
-            //diag1 elem
-            BingoCell diag1Elem = field[i][i];
-            diag1Bingo = diag1Bingo && diag1Elem.isHappened();
-            //diag2 elem
-            BingoCell diag2Elem = field[4-i][i];
-            diag2Bingo = diag2Bingo && diag2Elem.isHappened();
-            for(int j=0;j<5;j++){
-                //next element in row
-                BingoCell nextRowElem = field[i][j];
-                rowBingo = rowBingo && nextRowElem.isHappened();
-                //next element in col
-                BingoCell nextColElem = field[j][i];
-                colBingo = colBingo && nextColElem.isHappened();
+        this.finishedBingoCells = new ArrayList<>();
+        if(bingoAxes==null){
+            int[][][] axes = new int[12][5][2];
+            // row bingos
+            for(int i =0; i<5;i++){
+                for(int j=0;j<5;j++){
+                    axes[i][j][0] = i;
+                    axes[i][j][1] = j;
+                }
             }
-            if(rowBingo || colBingo){
-                return true;
+            // col bingos
+            for(int i =0; i<5;i++){
+                for(int j=0;j<5;j++){
+                    axes[5+i][j][0] = j;
+                    axes[5+i][j][1] = i;
+                }
             }
+            // diag bingos
+            for(int i=0;i<5;i++){
+                axes[11][i][0]=i;
+                axes[11][i][1]=i;
+                axes[10][i][0]=4-i;
+                axes[10][i][1]=i;
+            }
+            bingoAxes = axes;
         }
-        return (diag1Bingo || diag2Bingo);
+    }
+    
+
+    public boolean checkBingo() {
+        bingoLoop:
+        for(int[][] currentlyCheckedFields : bingoAxes){
+            for(int[] currentlyCheckedField : currentlyCheckedFields){
+                if(!this.field[currentlyCheckedField[0]][currentlyCheckedField[1]].isHappened()){
+                    continue bingoLoop;
+                }
+            }
+            System.out.println("Bingo");
+            this.thisBingoFinished=true;
+            this.finishedBingoCells = Arrays.stream(currentlyCheckedFields).map(pos -> this.field[pos[0]][pos[1]]).collect(Collectors.toList());
+            return true;
+        }
+        return false;
     }
 
 
@@ -69,5 +87,9 @@ public class BingoField {
 
     public boolean isThisBingoFinished() {
         return thisBingoFinished;
+    }
+
+    public List<BingoCell> getFinishedBingoCells() {
+        return finishedBingoCells;
     }
 }
