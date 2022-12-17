@@ -1,10 +1,14 @@
 package personal.pkonigstein.datatypes;
 
+import java.util.Date;
+
 public class BingoCell extends DataEntry{
 
     private static long idCounter= 0;
     private boolean happened;
     private long id;
+
+    private Date happenedTime;
 
     public BingoCell() {
     }
@@ -28,9 +32,14 @@ public class BingoCell extends DataEntry{
 
     public void setHappened(boolean happened) {
         this.happened = happened;
+        this.happenedTime = new Date();
     }
 
     public long getId() {
         return id;
+    }
+
+    public Date getHappenedTime() {
+        return happenedTime;
     }
 }

@@ -4,9 +4,11 @@ class BingoCell {
   name: string;
   action: string;
   happened : boolean;
+
+  happenedTime : Date;
   id :number;
 
-  constructor(id: number, name?: string, action?: string, happened?: boolean) {
+  constructor(id: number, name?: string, action?: string, happened?: boolean, happenedTime?: Date) {
     this.id = id;
     if(name){
       this.name = name;
@@ -25,6 +27,12 @@ class BingoCell {
     }
     else{
       this.happened = false;
+    }
+    if(happenedTime) {
+      this.happenedTime = happenedTime;
+    }
+    else{
+      this.happenedTime = new Date(0);
     }
   }
 
