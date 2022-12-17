@@ -52,9 +52,9 @@ public class BingoField {
             bingoAxes = axes;
         }
     }
-    
 
-    public boolean checkBingo() {
+
+    public void checkBingo() {
         bingoLoop:
         for(int[][] currentlyCheckedFields : bingoAxes){
             for(int[] currentlyCheckedField : currentlyCheckedFields){
@@ -62,23 +62,16 @@ public class BingoField {
                     continue bingoLoop;
                 }
             }
-            System.out.println("Bingo");
             this.thisBingoFinished=true;
             this.finishedBingoCells = Arrays.stream(currentlyCheckedFields).map(pos -> this.field[pos[0]][pos[1]]).collect(Collectors.toList());
-            return true;
         }
-        return false;
     }
 
 
     public void acceptCell(BingoCell cell) {
         Optional<BingoCell> foundCell = cells.stream().filter(c -> c.getId()==cell.getId()).findFirst();
         foundCell.ifPresent(bingoCell -> bingoCell.setHappened(true));
-        //TODO: do sth with this output:
-        if(checkBingo()){
-            System.out.println("BINGTOOTOT");
-            this.thisBingoFinished=true;
-        }
+        checkBingo();
     }
 
     public BingoCell[][] getField() {

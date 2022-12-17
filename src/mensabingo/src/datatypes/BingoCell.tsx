@@ -1,5 +1,6 @@
-export {BingoCell, BingoField}
-class BingoCell {
+import DateObject from "react-date-object";
+
+export class BingoCell {
 
   name: string;
   action: string;
@@ -39,7 +40,7 @@ class BingoCell {
 
 }
 
-class BingoField {
+export class BingoField {
   field : BingoCell[][];
   thisBingoFinished: boolean;
   finishedBingoCells : BingoCell[];

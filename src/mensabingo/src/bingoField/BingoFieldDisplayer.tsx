@@ -91,7 +91,9 @@ const BingoFieldDisplayer: React.FC<BingoFieldProps> = () => {
         <Modal.Body>
           <div>
           {bingoField.finishedBingoCells.map((cell)=>(
-            <div>{cell.name+" "+cell.action+" um "+cell.happenedTime}</div>
+            <div
+              key={cell.id}
+            >{cell.name+" "+cell.action+" um "+cell.happenedTime}</div>
           ))}
           </div>
         </Modal.Body>
