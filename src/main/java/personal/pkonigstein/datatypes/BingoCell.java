@@ -1,5 +1,6 @@
 package personal.pkonigstein.datatypes;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class BingoCell extends DataEntry{
@@ -8,7 +9,7 @@ public class BingoCell extends DataEntry{
     private boolean happened;
     private long id;
 
-    private Date happenedTime;
+    private String happenedTime;
 
     public BingoCell() {
     }
@@ -32,14 +33,14 @@ public class BingoCell extends DataEntry{
 
     public void setHappened(boolean happened) {
         this.happened = happened;
-        this.happenedTime = new Date();
+        this.happenedTime = new SimpleDateFormat("HH:mm:ss").format(new Date());
     }
 
     public long getId() {
         return id;
     }
 
-    public Date getHappenedTime() {
+    public String getHappenedTime() {
         return happenedTime;
     }
 }

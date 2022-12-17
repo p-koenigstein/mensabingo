@@ -6,10 +6,10 @@ export class BingoCell {
   action: string;
   happened : boolean;
 
-  happenedTime : Date;
+  happenedTime : string;
   id :number;
 
-  constructor(id: number, name?: string, action?: string, happened?: boolean, happenedTime?: Date) {
+  constructor(id: number, name?: string, action?: string, happened?: boolean, happenedTime?: string) {
     this.id = id;
     if(name){
       this.name = name;
@@ -33,7 +33,7 @@ export class BingoCell {
       this.happenedTime = happenedTime;
     }
     else{
-      this.happenedTime = new Date(0);
+      this.happenedTime = "";
     }
   }
 
