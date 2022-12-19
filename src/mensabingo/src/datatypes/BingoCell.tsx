@@ -1,4 +1,3 @@
-import DateObject from "react-date-object";
 
 export class BingoCell {
 

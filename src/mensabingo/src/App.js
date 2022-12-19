@@ -1,6 +1,5 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import BingoFieldDisplayer from "./bingoField/BingoFieldDisplayer";
 import PromptWindow from "./promptWindow/PromptWindow";
 import "bootstrap/dist/css/bootstrap.min.css";
 import LandingPage from "./LandingPage";

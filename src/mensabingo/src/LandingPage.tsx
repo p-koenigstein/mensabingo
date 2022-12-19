@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import axios from "axios";
 import {Button, Modal} from "react-bootstrap";
 import BingoFieldDisplayer from "./bingoField/BingoFieldDisplayer";
 import {useCookies} from "react-cookie";
@@ -18,7 +17,7 @@ const LandingPage: React.FC<LandingPageProps> = () => {
     const [name, setName] = useState<string>(defaultName);
     const [loggedIn, setLoggedIn] = useState<boolean>(false);
     const[loginModalOpen, setLoginModalOpen] = useState<boolean>(true);
-    const [cookies, setCookie, removeCookie] = useCookies<string>(['mensabingo']);
+    const [cookies, setCookie] = useCookies<string>(['mensabingo']);
 
     useEffect(() => {
         if(name !== defaultName){
@@ -36,7 +35,7 @@ const LandingPage: React.FC<LandingPageProps> = () => {
                 setName(cookieName);
             }
         }
-    },[]);
+    },[cookies]);
 
     /** ** ** ** ** ** **
      **                **
