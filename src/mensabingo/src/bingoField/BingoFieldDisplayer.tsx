@@ -5,17 +5,16 @@ import Button from "react-bootstrap/Button";
 import axios from "axios";
 import {anyoneNames, BingoCell, BingoField} from "../datatypes/BingoCell";
 
-export type BingoFieldProps = {};
+export type BingoFieldProps = {
+  name:string;
+};
 
-const BingoFieldDisplayer: React.FC<BingoFieldProps> = () => {
+const BingoFieldDisplayer: React.FC<BingoFieldProps> = ({name}) => {
   /** ** ** ** ** ** **
    **                **
    **  Hook States   **
    **                **
    ** ** ** ** ** ** **/
-  // name of player
-  const [name, setName] = useState<string>("Name");
-  const [tmpName, setTmpName] = useState<string>("Name");
   // content of bingo fields
   const [bingoField, setBingoField] = useState<BingoField>(new BingoField());
   const [clickedCell, setClickedCell] = useState<BingoCell>(new BingoCell(-1));
@@ -32,13 +31,11 @@ const BingoFieldDisplayer: React.FC<BingoFieldProps> = () => {
   const [bingoText, setBingoText] = useState<string>("You have the bingo of the kind");
 
   useEffect(() => {
-    if(name !== "Name"){
       axios.get("/getBingoField/"+name)
         .then(res => {
           setBingoField(res.data);
         });
-    }
-  },[name]);
+    },[name]);
 
   /** ** ** ** ** ** **
    **                **
@@ -99,8 +96,6 @@ const BingoFieldDisplayer: React.FC<BingoFieldProps> = () => {
 
   return (
     <div>
-      <input type={"text"} onChange={(e) => setTmpName(e.target.value)} value={tmpName}/>
-      <button onClick={() => setName(tmpName)}>Name abändern</button>
       <Modal show={bingoModalOpen} onHide={() => setBingoModalOpen(false)}>
         <Modal.Header>
           <Modal.Title>Bingo</Modal.Title>
