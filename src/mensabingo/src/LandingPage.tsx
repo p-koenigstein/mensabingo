@@ -85,7 +85,11 @@ const LandingPage: React.FC<LandingPageProps> = () => {
             .then(res => setLobbyList(res.data));
     }
 
-    return loggedIn && lobby!=="" ? <BingoFieldDisplayer name={name} currentLobby={lobby}/> : (
+    return loggedIn && lobby!=="" ? (
+        <div>
+            <BingoFieldDisplayer name={name} currentLobby={lobby}/>
+            <Button variant={"outline-warning"} onClick={resetLobby}>Lobby wechseln</Button>
+        </div>) : (
         <div>
                 <Modal show={loginModalOpen} onHide={() => setLoginModalOpen(false)}>
                     <Modal.Header>Login</Modal.Header>
