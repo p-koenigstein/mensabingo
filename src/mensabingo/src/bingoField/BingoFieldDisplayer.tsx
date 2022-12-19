@@ -117,7 +117,8 @@ const BingoFieldDisplayer: React.FC<BingoFieldProps> = ({name, currentLobby}) =>
 
   return (
     <div>
-      <Modal show={bingoModalOpen} onHide={() => setBingoModalOpen(false)}>
+      <Modal show={bingoModalOpen} onHide={() => setBingoModalOpen(false)}
+             size="sm">
         <Modal.Header>
           <Modal.Title>{bingoWinnerObj.name===name ? "Herzlichen Glückwunsch" : "Sieger: "+bingoWinnerObj.name}</Modal.Title>
         </Modal.Header>
