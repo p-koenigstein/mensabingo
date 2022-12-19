@@ -1,7 +1,10 @@
 package personal.pkonigstein;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class LobbyManager {
 
@@ -14,5 +17,12 @@ public class LobbyManager {
         return lobbies.get(lobbyName);
     }
 
+    public static List<String> getLobbyNames(){
+        return new ArrayList<>(lobbies.keySet());
+    }
+
+    public static void createLobby(String lobbyName){
+        lobbies.put(lobbyName, new BingoManager(lobbyName));
+    }
 
 }

@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from "react";
-import {Button, Modal} from "react-bootstrap";
+import {Button, ListGroupItem, Modal} from "react-bootstrap";
 import BingoFieldDisplayer from "./bingoField/BingoFieldDisplayer";
+import ListGroup from 'react-bootstrap/ListGroup';
 import {useCookies} from "react-cookie";
+import axios from "axios";
 
 export type LandingPageProps = {};
 
@@ -16,15 +18,19 @@ const LandingPage: React.FC<LandingPageProps> = () => {
     const [localName, setLocalName] = useState<string>(defaultName);
     const [name, setName] = useState<string>(defaultName);
     const [loggedIn, setLoggedIn] = useState<boolean>(false);
-    const[loginModalOpen, setLoginModalOpen] = useState<boolean>(true);
+    const [loginModalOpen, setLoginModalOpen] = useState<boolean>(true);
     const [cookies, setCookie] = useCookies<string>(['mensabingo']);
+    const [lobby, setLobby] = useState<string>("");
+    const [lobbyList, setLobbyList] = useState<string[]>([]);
 
     useEffect(() => {
         if(name !== defaultName){
             setLoggedIn(true);
+            setLoginModalOpen(false);
         }
         else{
             setLoggedIn(false);
+            setLoginModalOpen(true);
         }
     },[name]);
 
@@ -37,11 +43,22 @@ const LandingPage: React.FC<LandingPageProps> = () => {
         }
     },[cookies]);
 
+    useEffect(() => {
+        axios.get("/getLobbyList")
+            .then(res => {
+                setLobbyList(res.data)
+            })
+    },[])
+
     /** ** ** ** ** ** **
      **                **
      **   Functions    **
      **                **
      ** ** ** ** ** ** **/
+
+    const resetLobby = () => {
+        setLobby("");
+    }
 
     const focusName = () =>{
         if(localName === defaultName){
@@ -59,9 +76,15 @@ const LandingPage: React.FC<LandingPageProps> = () => {
         //set cookie !!
         setName(localName);
         setCookie("name",localName);
+        setLoginModalOpen(false);
     }
 
-    return loggedIn ? <BingoFieldDisplayer name={name}/> : (
+    const createLobby = (lobbyName:string) => {
+        axios.post("/createLobby",lobbyName)
+            .then();
+    }
+
+    return loggedIn && lobby!=="" ? <BingoFieldDisplayer name={name} currentLobby={lobby}/> : (
         <div>
                 <Modal show={loginModalOpen} onHide={() => setLoginModalOpen(false)}>
                     <Modal.Header>Login</Modal.Header>
@@ -78,6 +101,12 @@ const LandingPage: React.FC<LandingPageProps> = () => {
                         <Button variant={"success"} onClick={login}>Login</Button>
                     </Modal.Footer>
                 </Modal>
+            <ListGroup>
+                {lobbyList.map(entry =>(<ListGroupItem action onClick={() =>setLobby(entry)}>
+                    {entry}
+                </ListGroupItem>))}
+            </ListGroup>
+            <Button onClick={()=>createLobby("new")}>Neue Lobby</Button>
         </div>
     );
 };

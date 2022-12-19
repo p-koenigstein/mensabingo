@@ -7,16 +7,16 @@ import {anyoneNames, BingoCell, BingoField} from "../datatypes/BingoCell";
 
 export type BingoFieldProps = {
   name:string;
+  currentLobby:string;
 };
 
-const BingoFieldDisplayer: React.FC<BingoFieldProps> = ({name}) => {
+const BingoFieldDisplayer: React.FC<BingoFieldProps> = ({name, currentLobby}) => {
   /** ** ** ** ** ** **
    **                **
    **  Hook States   **
    **                **
    ** ** ** ** ** ** **/
   // lobby currently playing in
-  const lobbyName = "mensabingo";
   // content of bingo fields
   const [bingoField, setBingoField] = useState<BingoField>(new BingoField());
   const [clickedCell, setClickedCell] = useState<BingoCell>(new BingoCell(-1));
@@ -33,7 +33,7 @@ const BingoFieldDisplayer: React.FC<BingoFieldProps> = ({name}) => {
   const [bingoText, setBingoText] = useState<string>("You have the bingo of the kind");
 
   useEffect(() => {
-      axios.get("/getBingoField/"+lobbyName+"/"+name)
+      axios.get("/getBingoField/"+currentLobby+"/"+name)
         .then(res => {
           setBingoField(res.data);
         });
@@ -62,7 +62,7 @@ const BingoFieldDisplayer: React.FC<BingoFieldProps> = ({name}) => {
     // http request to backend to set field to true
     let localCopy = clickedCell;
     localCopy.anyoneWho = anyoneName;
-    axios.post("/acceptField/"+"/"+lobbyName+"/"+name,localCopy)
+    axios.post("/acceptField/"+"/"+currentLobby+"/"+name,localCopy)
       .then(res => {
         setBingoField(res.data)
         if(res.data.thisBingoFinished){

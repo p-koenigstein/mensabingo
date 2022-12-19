@@ -7,6 +7,8 @@ import personal.pkonigstein.datatypes.BingoField;
 import personal.pkonigstein.datatypes.DataEntry;
 import personal.pkonigstein.datatypes.MongoConnector;
 
+import java.util.List;
+
 @RestController
 public class PromptController {
 
@@ -14,6 +16,16 @@ public class PromptController {
     public int addEntry(@RequestBody DataEntry entry){
         MongoConnector.save(entry);
         return 0;
+    }
+
+    @GetMapping(value="/getLobbyList")
+    public List<String> getLobbyList(){
+        return LobbyManager.getLobbyNames();
+    }
+
+    @PostMapping(value="/createLobby")
+    public void createLobby(@RequestBody String lobbyName){
+        LobbyManager.createLobby(lobbyName);
     }
 
     @GetMapping(value="/getBingoField/{lobbyName}/{name}")
