@@ -19,7 +19,7 @@ const LandingPage: React.FC<LandingPageProps> = () => {
     const [name, setName] = useState<string>(defaultName);
     const [loggedIn, setLoggedIn] = useState<boolean>(false);
     const [loginModalOpen, setLoginModalOpen] = useState<boolean>(true);
-    const [cookies, setCookie] = useCookies<string>(['mensabingo']);
+    const [cookies, setCookie, deleteCookie] = useCookies<string>(['mensabingo']);
     const [lobby, setLobby] = useState<string>("");
     const [lobbyName, setLobbyName] = useState<string>("");
     const [lobbyList, setLobbyList] = useState<string[]>([]);
@@ -80,6 +80,13 @@ const LandingPage: React.FC<LandingPageProps> = () => {
         setLoginModalOpen(false);
     }
 
+    const logout = () => {
+        //delete cookie
+        setName(defaultName);
+        deleteCookie("name");
+        setLoginModalOpen(true);
+    }
+
     const createLobby = () => {
         axios.post("/createLobby",{lobbyName: lobbyName})
             .then(res => setLobbyList(res.data));
@@ -113,6 +120,7 @@ const LandingPage: React.FC<LandingPageProps> = () => {
             </ListGroup>
             <input type={"text"} value={lobbyName} onChange={e => setLobbyName(e.target.value)}/>
             <Button variant={"outline-success"} onClick={()=>createLobby()}>Neue Lobby erstellen</Button>
+            <Button variant={"outline-danger"} onClick = {() => logout()}>Logout</Button>
         </div>
     );
 };

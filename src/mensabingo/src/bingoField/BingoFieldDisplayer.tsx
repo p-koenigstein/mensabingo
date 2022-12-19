@@ -78,7 +78,12 @@ const BingoFieldDisplayer: React.FC<BingoFieldProps> = ({name, currentLobby}) =>
   const acceptCell = () => {
     // http request to backend to set field to true
     let localCopy = clickedCell;
-    localCopy.anyoneWho = anyoneName;
+    if(anyoneName===defaultAnyoneName){
+      localCopy.anyoneWho = "Irgendjemand";
+    }
+    else{
+      localCopy.anyoneWho = anyoneName;
+    }
     axios.post("/acceptField/"+"/"+currentLobby+"/"+name,localCopy)
       .then(res => {
         setBingoField(res.data)
