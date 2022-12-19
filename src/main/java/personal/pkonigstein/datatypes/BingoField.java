@@ -70,7 +70,10 @@ public class BingoField {
 
     public void acceptCell(BingoCell cell) {
         Optional<BingoCell> foundCell = cells.stream().filter(c -> c.getId()==cell.getId()).findFirst();
-        foundCell.ifPresent(bingoCell -> bingoCell.setHappened(true));
+        foundCell.ifPresent(bingoCell -> {
+            bingoCell.setHappened(true);
+            bingoCell.setAnyoneName(cell.getAnyoneWho());
+        });
         checkBingo();
     }
 

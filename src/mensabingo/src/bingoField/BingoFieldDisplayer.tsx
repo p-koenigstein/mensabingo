@@ -61,13 +61,16 @@ const BingoFieldDisplayer: React.FC<BingoFieldProps> = () => {
 
   const acceptCell = () => {
     // http request to backend to set field to true
-    axios.post("/acceptField/"+name,clickedCell)
+    let localCopy = clickedCell;
+    localCopy.anyoneWho = anyoneName;
+    axios.post("/acceptField/"+name,localCopy)
       .then(res => {
         setBingoField(res.data)
         if(res.data.thisBingoFinished){
           setBingoModalOpen(true);
         }
       });
+    setAnyoneName(defaultAnyoneName);
     closeModal();
   };
 
@@ -107,7 +110,8 @@ const BingoFieldDisplayer: React.FC<BingoFieldProps> = () => {
           {bingoField.finishedBingoCells.map((cell)=>(
             <div
               key={cell.id}
-            >{cell.name+" "+cell.action+" um "+cell.happenedTime}</div>
+            >{anyoneNames.includes(cell.name) ? cell.anyoneWho : cell.name}
+              {" "+cell.action+" um "+cell.happenedTime}</div>
           ))}
           </div>
         </Modal.Body>

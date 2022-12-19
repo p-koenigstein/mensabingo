@@ -51,4 +51,8 @@ public class BingoCell extends DataEntry{
     public String getAnyoneWho() {
         return anyoneWho;
     }
+
+    public void setAnyoneName(String anyoneWho) {
+        this.anyoneWho = anyoneWho;
+    }
 }
