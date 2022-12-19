@@ -8,6 +8,7 @@ import personal.pkonigstein.datatypes.DataEntry;
 import personal.pkonigstein.datatypes.MongoConnector;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class PromptController {
@@ -24,8 +25,9 @@ public class PromptController {
     }
 
     @PostMapping(value="/createLobby")
-    public void createLobby(@RequestBody String lobbyName){
-        LobbyManager.createLobby(lobbyName);
+    public List<String> createLobby(@RequestBody Map<String,String> lobbyName){
+        LobbyManager.createLobby(lobbyName.get("lobbyName"));
+        return LobbyManager.getLobbyNames();
     }
 
     @GetMapping(value="/getBingoField/{lobbyName}/{name}")

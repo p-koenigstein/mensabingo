@@ -21,6 +21,7 @@ const LandingPage: React.FC<LandingPageProps> = () => {
     const [loginModalOpen, setLoginModalOpen] = useState<boolean>(true);
     const [cookies, setCookie] = useCookies<string>(['mensabingo']);
     const [lobby, setLobby] = useState<string>("");
+    const [lobbyName, setLobbyName] = useState<string>("");
     const [lobbyList, setLobbyList] = useState<string[]>([]);
 
     useEffect(() => {
@@ -79,9 +80,9 @@ const LandingPage: React.FC<LandingPageProps> = () => {
         setLoginModalOpen(false);
     }
 
-    const createLobby = (lobbyName:string) => {
-        axios.post("/createLobby",lobbyName)
-            .then();
+    const createLobby = () => {
+        axios.post("/createLobby",{lobbyName: lobbyName})
+            .then(res => setLobbyList(res.data));
     }
 
     return loggedIn && lobby!=="" ? <BingoFieldDisplayer name={name} currentLobby={lobby}/> : (
@@ -106,7 +107,8 @@ const LandingPage: React.FC<LandingPageProps> = () => {
                     {entry}
                 </ListGroupItem>))}
             </ListGroup>
-            <Button onClick={()=>createLobby("new")}>Neue Lobby</Button>
+            <input type={"text"} value={lobbyName} onChange={e => setLobbyName(e.target.value)}/>
+            <Button variant={"outline-success"} onClick={()=>createLobby()}>Neue Lobby erstellen</Button>
         </div>
     );
 };
