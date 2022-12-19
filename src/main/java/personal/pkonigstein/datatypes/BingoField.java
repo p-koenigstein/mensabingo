@@ -54,7 +54,7 @@ public class BingoField {
     }
 
 
-    public void checkBingo() {
+    public boolean checkBingo() {
         bingoLoop:
         for(int[][] currentlyCheckedFields : bingoAxes){
             for(int[] currentlyCheckedField : currentlyCheckedFields){
@@ -64,7 +64,9 @@ public class BingoField {
             }
             this.thisBingoFinished=true;
             this.finishedBingoCells = Arrays.stream(currentlyCheckedFields).map(pos -> this.field[pos[0]][pos[1]]).collect(Collectors.toList());
+            return true;
         }
+        return false;
     }
 
 
@@ -74,7 +76,6 @@ public class BingoField {
             bingoCell.setHappened(true);
             bingoCell.setAnyoneName(cell.getAnyoneWho());
         });
-        checkBingo();
     }
 
     public BingoCell[][] getField() {
@@ -87,5 +88,9 @@ public class BingoField {
 
     public List<BingoCell> getFinishedBingoCells() {
         return finishedBingoCells;
+    }
+
+    public void setHasFinished(boolean hasFinished) {
+        this.thisBingoFinished = true;
     }
 }

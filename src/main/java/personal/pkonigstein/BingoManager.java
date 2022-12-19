@@ -1,9 +1,6 @@
 package personal.pkonigstein;
 
-import personal.pkonigstein.datatypes.BingoCell;
-import personal.pkonigstein.datatypes.BingoField;
-import personal.pkonigstein.datatypes.DataEntry;
-import personal.pkonigstein.datatypes.MongoConnector;
+import personal.pkonigstein.datatypes.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,10 +11,12 @@ public class BingoManager {
 
     private String lobbyName;
     private Map<String, BingoField> fieldsByPlayer;
+    private BingoWinner winner;
 
     public BingoManager(String lobbyName) {
         this.lobbyName = lobbyName;
         this.fieldsByPlayer = new HashMap<>();
+        this.winner = null;
     }
 
     public BingoField getField(String playerName){
@@ -40,6 +39,16 @@ public class BingoManager {
 
     public BingoField acceptCell(String name, BingoCell cell) {
         fieldsByPlayer.get(name).acceptCell(cell);
+        if(fieldsByPlayer.get(name).checkBingo()){
+            this.winner = new BingoWinner(name, fieldsByPlayer.get(name).getFinishedBingoCells());
+            for(Map.Entry<String,BingoField> player : fieldsByPlayer.entrySet()){
+                player.getValue().setHasFinished(true);
+            }
+        }
         return fieldsByPlayer.get(name);
+    }
+
+    public BingoWinner getWinner() {
+        return winner;
     }
 }

@@ -107,7 +107,7 @@ const LandingPage: React.FC<LandingPageProps> = () => {
                     </Modal.Footer>
                 </Modal>
             <ListGroup>
-                {lobbyList.map(entry =>(<ListGroupItem action onClick={() =>setLobby(entry)}>
+                {lobbyList.map(entry =>(<ListGroupItem action onClick={() =>setLobby(entry)} key={entry}>
                     {entry}
                 </ListGroupItem>))}
             </ListGroup>

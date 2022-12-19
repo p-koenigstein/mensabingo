@@ -2,10 +2,7 @@ package personal.pkonigstein;
 
 
 import org.springframework.web.bind.annotation.*;
-import personal.pkonigstein.datatypes.BingoCell;
-import personal.pkonigstein.datatypes.BingoField;
-import personal.pkonigstein.datatypes.DataEntry;
-import personal.pkonigstein.datatypes.MongoConnector;
+import personal.pkonigstein.datatypes.*;
 
 import java.util.List;
 import java.util.Map;
@@ -22,6 +19,11 @@ public class PromptController {
     @GetMapping(value="/getLobbyList")
     public List<String> getLobbyList(){
         return LobbyManager.getLobbyNames();
+    }
+
+    @GetMapping(value="/getBingoWinner/{lobby}")
+    public BingoWinner getLobbyWinner(@PathVariable String lobby){
+        return LobbyManager.getLobby(lobby).getWinner();
     }
 
     @PostMapping(value="/createLobby")

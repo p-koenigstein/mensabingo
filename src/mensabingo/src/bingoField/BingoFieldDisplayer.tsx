@@ -3,7 +3,7 @@ import BingoBox from "./BingoBox";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
-import {anyoneNames, BingoCell, BingoField} from "../datatypes/BingoCell";
+import {anyoneNames, BingoCell, BingoField, BingoWinner} from "../datatypes/BingoCell";
 
 export type BingoFieldProps = {
   name:string;
@@ -20,6 +20,8 @@ const BingoFieldDisplayer: React.FC<BingoFieldProps> = ({name, currentLobby}) =>
   // content of bingo fields
   const [bingoField, setBingoField] = useState<BingoField>(new BingoField());
   const [clickedCell, setClickedCell] = useState<BingoCell>(new BingoCell(-1));
+  // BingoWinner object if someone won
+  const [bingoWinnerObj, setBingoWinnerObj] = useState<BingoWinner>(new BingoWinner("no",[]));
   // if bingofield contains anyone as name, enter a name who did it
   let defaultAnyoneName = "Wer ?";
   const [anyoneName, setAnyoneName] = useState<string>(defaultAnyoneName);
@@ -29,8 +31,6 @@ const BingoFieldDisplayer: React.FC<BingoFieldProps> = ({name, currentLobby}) =>
   const [modalText, setModalText] = useState<string>("");
   // whether bingo popup is open
   const [bingoModalOpen, setBingoModalOpen] = useState<boolean>(false);
-  // bingo popup text
-  const [bingoText, setBingoText] = useState<string>("You have the bingo of the kind");
 
   useEffect(() => {
       axios.get("/getBingoField/"+currentLobby+"/"+name)
@@ -38,6 +38,23 @@ const BingoFieldDisplayer: React.FC<BingoFieldProps> = ({name, currentLobby}) =>
           setBingoField(res.data);
         });
     },[name]);
+
+  useEffect(() => {
+    if(bingoWinnerObj.name!=="no"){
+      setBingoModalOpen(true);
+    }
+  },[bingoWinnerObj])
+
+  useEffect(() =>{
+    if(bingoField.thisBingoFinished){
+      axios.get("/getBingoWinner/"+currentLobby)
+          .then(
+              res =>{
+                setBingoWinnerObj(res.data);
+              }
+          )
+    }
+  },[bingoField])
 
   /** ** ** ** ** ** **
    **                **
@@ -65,9 +82,6 @@ const BingoFieldDisplayer: React.FC<BingoFieldProps> = ({name, currentLobby}) =>
     axios.post("/acceptField/"+"/"+currentLobby+"/"+name,localCopy)
       .then(res => {
         setBingoField(res.data)
-        if(res.data.thisBingoFinished){
-          setBingoModalOpen(true);
-        }
       });
     setAnyoneName(defaultAnyoneName);
     closeModal();
@@ -100,11 +114,11 @@ const BingoFieldDisplayer: React.FC<BingoFieldProps> = ({name, currentLobby}) =>
     <div>
       <Modal show={bingoModalOpen} onHide={() => setBingoModalOpen(false)}>
         <Modal.Header>
-          <Modal.Title>Bingo</Modal.Title>
+          <Modal.Title>{bingoWinnerObj.name===name ? "Herzlichen Glückwunsch" : "Sieger: "+bingoWinnerObj.name}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div>
-          {bingoField.finishedBingoCells.map((cell)=>(
+          {bingoWinnerObj.cells.map((cell)=>(
             <div
               key={cell.id}
             >{anyoneNames.includes(cell.name) ? cell.anyoneWho : cell.name}
@@ -113,8 +127,8 @@ const BingoFieldDisplayer: React.FC<BingoFieldProps> = ({name, currentLobby}) =>
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="success" onClick={() => setBingoModalOpen(false)}>
-            Gewinnertyp(-in)
+          <Button variant={bingoWinnerObj.name===name ? "success" : "danger"} onClick={() => setBingoModalOpen(false)}>
+            {bingoWinnerObj.name===name ? "Gewinnertyp(-in)" : "Verlierertyp(-in)"}
           </Button>
         </Modal.Footer>
       </Modal>

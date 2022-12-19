@@ -65,5 +65,15 @@ export class BingoField {
   }
 }
 
+export class BingoWinner {
+  name:string;
+  cells :BingoCell[];
+
+  constructor(name: string, cells: BingoCell[]) {
+    this.name = name;
+    this.cells = cells;
+  }
+}
+
 export const anyoneNames=["Irgendwer", "Irgendjemand", "anyone", "Jemand"]
 
