@@ -28,7 +28,7 @@ public class BingoManager {
 
     private static BingoField generateField(String playerName){
         //TODO: filter Entries by playerName
-        List<DataEntry> entries = MongoConnector.getBingoField();
+        List<DataEntry> entries = MongoConnector.getBingoField(playerName);
         assert entries != null;
         return new BingoField(entries.stream().map(BingoCell::new).collect(Collectors.toList()));
     }
