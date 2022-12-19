@@ -3,7 +3,7 @@ import BingoBox from "./BingoBox";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
-import { BingoCell, BingoField } from "../datatypes/BingoCell";
+import {anyoneNames, BingoCell, BingoField} from "../datatypes/BingoCell";
 
 export type BingoFieldProps = {};
 
@@ -19,7 +19,9 @@ const BingoFieldDisplayer: React.FC<BingoFieldProps> = () => {
   // content of bingo fields
   const [bingoField, setBingoField] = useState<BingoField>(new BingoField());
   const [clickedCell, setClickedCell] = useState<BingoCell>(new BingoCell(-1));
-
+  // if bingofield contains anyone as name, enter a name who did it
+  let defaultAnyoneName = "Wer ?";
+  const [anyoneName, setAnyoneName] = useState<string>(defaultAnyoneName);
   // whether popup currently is open
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   // popup text
@@ -69,6 +71,18 @@ const BingoFieldDisplayer: React.FC<BingoFieldProps> = () => {
     closeModal();
   };
 
+  const focusAnyoneName = ()  => {
+    if(anyoneName === defaultAnyoneName){
+      setAnyoneName("");
+    }
+  }
+
+  const blurAnyoneName = () => {
+    if(anyoneName === ""){
+      setAnyoneName(defaultAnyoneName);
+    }
+  }
+
 
   const refuseField = () => {
     closeModal();
@@ -107,7 +121,15 @@ const BingoFieldDisplayer: React.FC<BingoFieldProps> = () => {
         <Modal.Header>
           <Modal.Title>Bingofeld erfüllt</Modal.Title>
         </Modal.Header>
-        <Modal.Body>{modalText}</Modal.Body>
+        <Modal.Body>{modalText}
+          {anyoneNames.includes(clickedCell.name)? <input
+              type={"text"}
+              value={anyoneName}
+              onChange={(e) => setAnyoneName(e.target.value)}
+              onFocus={focusAnyoneName}
+              onBlur = {blurAnyoneName}
+          />:<div/>}
+        </Modal.Body>
         <Modal.Footer>
           <Button variant="success" onClick={acceptCell}>
             Yesss

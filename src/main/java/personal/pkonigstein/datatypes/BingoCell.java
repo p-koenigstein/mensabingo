@@ -9,6 +9,8 @@ public class BingoCell extends DataEntry{
     private boolean happened;
     private long id;
 
+    private String anyoneWho = "";
+
     private String happenedTime;
 
     public BingoCell() {
@@ -19,12 +21,14 @@ public class BingoCell extends DataEntry{
         this.action = entry.action;
         this.name = entry.name;
         this.happened = false;
+        this.anyoneWho = "";
     }
 
     public BingoCell(String name, String action) {
         super(name, action);
         this.id = idCounter++;
         this.happened = false;
+        this.anyoneWho = "";
     }
 
     public boolean isHappened() {
@@ -42,5 +46,9 @@ public class BingoCell extends DataEntry{
 
     public String getHappenedTime() {
         return happenedTime;
+    }
+
+    public String getAnyoneWho() {
+        return anyoneWho;
     }
 }

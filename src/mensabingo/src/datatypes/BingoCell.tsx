@@ -8,8 +8,9 @@ export class BingoCell {
 
   happenedTime : string;
   id :number;
+  anyoneWho:string;
 
-  constructor(id: number, name?: string, action?: string, happened?: boolean, happenedTime?: string) {
+  constructor(id: number, name?: string, action?: string, happened?: boolean, happenedTime?: string, anyoneWho?:string) {
     this.id = id;
     if(name){
       this.name = name;
@@ -35,6 +36,12 @@ export class BingoCell {
     else{
       this.happenedTime = "";
     }
+    if(anyoneWho){
+      this.anyoneWho = anyoneWho;
+    }
+    else{
+      this.anyoneWho ="";
+    }
   }
 
 
@@ -58,3 +65,6 @@ export class BingoField {
     this.finishedBingoCells = [];
   }
 }
+
+export const anyoneNames=["Irgendwer", "Irgendjemand", "anyone", "Jemand"]
+
