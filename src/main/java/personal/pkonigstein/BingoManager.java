@@ -12,9 +12,15 @@ import java.util.stream.Collectors;
 
 public class BingoManager {
 
-    private static Map<String, BingoField> fieldsByPlayer = new HashMap<>();
+    private String lobbyName;
+    private Map<String, BingoField> fieldsByPlayer;
 
-    public static BingoField getField(String playerName){
+    public BingoManager(String lobbyName) {
+        this.lobbyName = lobbyName;
+        this.fieldsByPlayer = new HashMap<>();
+    }
+
+    public BingoField getField(String playerName){
         if(fieldsByPlayer == null){
             fieldsByPlayer = new HashMap<>();
         }
@@ -26,14 +32,13 @@ public class BingoManager {
         return fieldsByPlayer.get(playerName);
     }
 
-    private static BingoField generateField(String playerName){
-        //TODO: filter Entries by playerName
+    private BingoField generateField(String playerName){
         List<DataEntry> entries = MongoConnector.getBingoField(playerName);
         assert entries != null;
         return new BingoField(entries.stream().map(BingoCell::new).collect(Collectors.toList()));
     }
 
-    public static BingoField acceptCell(String name, BingoCell cell) {
+    public BingoField acceptCell(String name, BingoCell cell) {
         fieldsByPlayer.get(name).acceptCell(cell);
         return fieldsByPlayer.get(name);
     }

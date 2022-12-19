@@ -16,14 +16,14 @@ public class PromptController {
         return 0;
     }
 
-    @GetMapping(value="/getBingoField/{name}")
-    public BingoField getBingofield(@PathVariable String name){
-        return BingoManager.getField(name);
+    @GetMapping(value="/getBingoField/{lobbyName}/{name}")
+    public BingoField getBingofield(@PathVariable String lobbyName, @PathVariable String name){
+        return LobbyManager.getLobby(lobbyName).getField(name);
     }
 
-    @PostMapping(value="/acceptField/{name}")
-    public BingoField acceptCell(@PathVariable String name, @RequestBody BingoCell cell){
-        return BingoManager.acceptCell(name, cell);
+    @PostMapping(value="/acceptField/{lobbyName}/{name}")
+    public BingoField acceptCell(@PathVariable String lobbyName, @PathVariable String name, @RequestBody BingoCell cell){
+        return LobbyManager.getLobby(lobbyName).acceptCell(name, cell);
     }
 
 }
